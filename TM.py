@@ -41,7 +41,7 @@ class Tape:
         return tape_str
     
 class TuringMachine:
-    def __init__(self, tm_string, input_string):
+    def __init__(self, tm_string):
         self.states = set()
         self.input_alphabet = set()
         self.tape_alphabet = set()
@@ -50,10 +50,8 @@ class TuringMachine:
         self.accept_state = ""
         self.reject_state = ""
         self.is_valid = True
-        self.parse_tm_string(tm_string)
-        self.tape = Tape(input_string)
+        self.parse_tm_string(tm_string) # Immediately parse the TM string
         self.current_state = self.start_state
-        self.input_string = input_string
 
     def parse_tm_string(self, tm_string):
         parts = tm_string.split('#')
@@ -108,10 +106,13 @@ class TuringMachine:
             print("Invalid reject state.")
             self.is_valid = False
 
-    def simulate(self):
+    def simulate(self, input_string):
+        self.tape = Tape(input_string)
         self.current_state = self.start_state
+        self.input_string = input_string
+
         steps = 0
-        max_steps = len(self.input_string) ** len(self.input_string)  # Set max steps to |w|^|w|
+        max_steps = len(self.input_string) ** 3  # Arbitrary limit to prevent infinite loops
 
         while self.current_state != self.accept_state and self.current_state != self.reject_state:
             if steps > max_steps:
