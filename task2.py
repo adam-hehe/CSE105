@@ -3,7 +3,7 @@ from TM import TuringMachine
 def mapping_reduction(input_string):
     """
     This function takes a string representation of A_tm {<M,w> | M is a TM and accepts the string w}
-    and returns a mapping reduction to EQ_tm  {<M,M'> | M and M' are TMs and L(M) = L(M')}.
+    and returns a mapping reduction to EQ_tm {<M,M'> | M and M' are TMs and L(M) = L(M')}.
     """
 
     tm_acc = 'qA,qR#0,1#0,1,_##qA#qA#qR'
@@ -24,8 +24,6 @@ def mapping_reduction(input_string):
     if not tm.is_valid_tm():
         print("Invalid Turing machine encoding.")
         return f"{tm_acc}#{tm_rej}"
-    
-    m_output = ''
 
     """
     The mapping reduction is as follows:

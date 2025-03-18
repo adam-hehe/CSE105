@@ -23,7 +23,7 @@ class Tape:
         self.current = self.current.prev
 
     def move_right(self):
-        if self.current.next is None:
+        if self.current.next is None: # create a new blank node if we are at the end of the tape
             new_node = Node('_')
             new_node.prev = self.current
             self.current.next = new_node
@@ -58,13 +58,13 @@ class TuringMachine:
         self.current_state = self.start_state
 
     def parse_tm_string(self, tm_string):
-        parts = tm_string.split('#')
-        if len(parts) != 7:
+        parts = tm_string.split('#') # Split the TM string into its components
+        if len(parts) != 7: # Ensure there are exactly 7 parts
             self.is_valid = False
             return
         
         self.states = set(parts[0].strip().split(','))
-        if not self.states:
+        if not self.states: #
             print("Invalid states.")
             self.is_valid = False
         
@@ -79,7 +79,7 @@ class TuringMachine:
             self.is_valid = False
         
         transitions = parts[3].strip()
-        if transitions:
+        if transitions: 
             transitions = transitions.split(';')
             for transition in transitions:
                 trans_parts = transition.split('->')
