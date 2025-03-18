@@ -40,15 +40,28 @@ def mapping_reduction(input_string):
     return f"{m_output}#{tm_acc}"
 
 if __name__ == "__main__":
-    input_string = "q0,q1,q2#0,1#0,1,_#(q0,0)->(q1,1,R);(q1,1)->(q2,0,L)#q0#q1#q2#0"
-    result = mapping_reduction(input_string)
+    accept_string = "q0,q1,q2#0,1#0,1,_#(q0,0)->(q1,1,R);(q1,1)->(q2,0,L)#q0#q1#q2#0"
+    result = mapping_reduction(accept_string)
     print("Positive instance result:")
     parts = result.split('#', 7) # split the two TMs
     tm1_str = '#'.join(parts[:7]) # piece back together the first TM
     tm2_str = parts[7]
-    tm1 = TuringMachine(tm1_str)
-    tm2 = TuringMachine(tm2_str)
-    print("TM1:")
-    print(tm1)
-    print("TM2:")
-    print(tm2)
+    m_prime = TuringMachine(tm1_str)
+    m_acc = TuringMachine(tm2_str)
+    print("M':")
+    print(m_prime)
+    print("M_acc:")
+    print(m_acc)
+
+    reject_string = "q0,q1,q2#0,1#0,1,_#(q0,0)->(q1,1,R);(q1,1)->(q2,0,L)#q0#q1#q2#1"
+    result = mapping_reduction(reject_string)
+    print("Negative instance result:")
+    parts = result.split('#', 7) # split the two TMs
+    tm1_str = '#'.join(parts[:7]) # piece back together the first TM
+    tm2_str = parts[7]
+    m_prime = TuringMachine(tm1_str)
+    m_acc = TuringMachine(tm2_str)
+    print("M':")
+    print(m_prime)
+    print("M_acc:")
+    print(m_acc)

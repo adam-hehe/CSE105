@@ -5,10 +5,14 @@ class Node:
         self.next = None
 
 class Tape:
-    def __init__(self, input_string):
+    def __init__(self, input_string, tape_alphabet):
         self.head = Node('_')  # Initial blank symbol
         self.current = self.head
         for char in input_string:
+            if char not in tape_alphabet:
+                print(f"Invalid character '{char}' in input string.")
+                self.is_valid = False
+                break
             self.write(char)
             self.move_right()
         self.current = self.head  # Reset to the start of the tape
@@ -107,19 +111,22 @@ class TuringMachine:
             self.is_valid = False
 
     def simulate(self, input_string):
-        self.tape = Tape(input_string)
+        self.tape = Tape(input_string, self.tape_alphabet)
         self.current_state = self.start_state
         self.input_string = input_string
+        if not self.tape.is_valid:
+            return False
 
         steps = 0
-        max_steps = len(self.input_string) ** 3  # Arbitrary limit to prevent infinite loops
+        max_steps = len(self.input_string) ** 4  # Arbitrary limit to prevent infinite loops
 
         while self.current_state != self.accept_state and self.current_state != self.reject_state:
             if steps > max_steps:
                 return False  # Assume reject if it runs too long (infinite loop)
             current_symbol = self.tape.read()
             if (self.current_state, current_symbol) not in self.transitions:
-                return False  # No valid transition, reject
+                self.current_state = self.reject_state  # No valid transition, go to reject state
+                break  # No valid transition, reject
             next_state, write_symbol, direction = self.transitions[(self.current_state, current_symbol)]
             self.tape.write(write_symbol)
             if direction == 'L':
